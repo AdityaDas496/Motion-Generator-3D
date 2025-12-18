@@ -57,4 +57,4 @@ try:
     print("   (Batch Size, Max Text Tokens)")
 
 except Exception as e:
-    print(f"❌ ERROR getting batch from DataLoader: {e}")
+    print(f"Error getting batch from DataLoader: {e}")
