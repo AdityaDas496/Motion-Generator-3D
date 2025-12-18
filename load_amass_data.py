@@ -140,7 +140,7 @@ def main():
         if processed_count % 10 == 0:
             print(f"Processed {processed_count}/{MOTIONS_TO_LOAD} motions...")
 
-    print("\n--- PROCESSING COMPLETE ---")
+    print("\nPROCESSING COMPLETE")
     print(f"Successfully processed {processed_count} motions.")
     print(f"Created {len(all_text_data)} total (motion, text) pairs.")
 
