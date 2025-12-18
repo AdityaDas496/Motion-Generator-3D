@@ -1,3 +1,5 @@
+# Generative 3D motion generator
+
 This is a project where I'm trying to generate **human motion** (like walking, turning, etc.) directly from **text descriptions** using a Transformer model.
 Basically: you write something like *"a person walks forward"* and the model outputs a motion sequence.
 
