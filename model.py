@@ -3,8 +3,6 @@ import torch.nn as nn
 import math
 from transformers import CLIPModel
 
-# This is a standard, essential part of all Transformer models
-# It helps the AI understand the *order* of the animation frames
 class PositionalEncoding(nn.Module):
     def __init__(self, d_model: int, dropout: float = 0.1, max_len: int = 5000):
         super().__init__()
