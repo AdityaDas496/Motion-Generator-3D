@@ -1,14 +1,14 @@
 import os
 
-# --- 1. --- YOU MUST EDIT THIS ---
 # Point this to the folder you unzipped
-KIT_DATA_PATH = r"C:/Users/Aditya Das/Downloads/2017-06-22"
+# Keep mind of the path of the where you store the AMASS dataset
+KIT_DATA_PATH = r"PUT_PATH_HERE"
 
-# --- 2. --- Define the file to check ---
+# Define the file to check
 # We'll just look at the first file that failed
 XML_FILE_PATH = os.path.join(KIT_DATA_PATH, "00001_mmm.xml")
 
-print(f"--- DEBUGGING XML FILE: {XML_FILE_PATH} ---")
+print(f"DEBUGGING XML FILE: {XML_FILE_PATH}")
 
 try:
     with open(XML_FILE_PATH, 'r') as f:
@@ -16,12 +16,12 @@ try:
         for i in range(20):
             line = f.readline()
             if not line:
-                break # Stop if the file is shorter than 20 lines
+                break # Stopping in case the file is shorter than 20 lines
             print(line, end='') # 'end='' stops it from double-spacing
 
-    print("\n\n--- DEBUGGING COMPLETE ---")
+    print("\n\nDEBUGGING COMPLETE")
 
 except FileNotFoundError:
-    print(f"❌ ERROR: File not found. Check your KIT_DATA_PATH.")
+    print(f"Error: File not found. Check your KIT_DATA_PATH.")
 except Exception as e:
-    print(f"❌ ERROR: {e}")
+    print(f"ERROR: {e}")
