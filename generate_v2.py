@@ -54,4 +54,4 @@ try:
         print(f"\nSUCCESS! Animation saved to: {save_path}")
 
 except Exception as e:
-    print(f"❌ Error: {e}")
+    print(f"Error: {e}")
