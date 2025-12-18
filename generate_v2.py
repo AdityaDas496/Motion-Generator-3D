@@ -5,20 +5,20 @@ from transformers import CLIPProcessor
 from model import MotionTransformer 
 import json
 
-# --- 1. SETTINGS ---
-# Use "." to refer to the current folder since the script is inside it
+# Settings
+# Using "." to refer to the current folder since the script is inside it
 BASE_PATH = os.path.dirname(os.path.abspath(__file__)) 
 MODEL_PATH = os.path.join(BASE_PATH, "kit_model.pth")
 TEXT_FILE = os.path.join(BASE_PATH, "kit_text_data.json")
 MOTION_FILE = os.path.join(BASE_PATH, "kit_motion_data.npy") 
 
-# --- 2. PARAMETERS ---
-PROMPT = "A person walks." # <--- You can change this!
+# The parameters, here is where we enter the prompt for the movement we want to generate
+PROMPT = "A person walks." # <- Change it to something else
 NUM_FRAMES = 150                 
 
-print(f"--- GENERATING V2 ANIMATION: '{PROMPT}' ---")
+print(f"GENERATING V2 ANIMATION FOR PROMPT: '{PROMPT}'")
 
-# --- 3. LOAD RESOURCES ---
+# Load Resources
 # Get feature count from real data
 try:
     sample = np.load(MOTION_FILE, allow_pickle=True)[0]
@@ -36,7 +36,7 @@ model.eval()
 # Load Text Processor
 processor = CLIPProcessor.from_pretrained("openai/clip-vit-base-patch32")
 
-# --- 4. GENERATE ---
+# Generate motion with exception and error handling
 try:
     with torch.no_grad():
         # Prepare inputs
@@ -51,7 +51,7 @@ try:
         save_path = os.path.join(BASE_PATH, "kit_generated_motion.npy")
         np.save(save_path, output_data)
         
-        print(f"\n✅ SUCCESS! Animation saved to: {save_path}")
+        print(f"\nSUCCESS! Animation saved to: {save_path}")
 
 except Exception as e:
     print(f"❌ Error: {e}")
