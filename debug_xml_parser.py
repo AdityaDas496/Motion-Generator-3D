@@ -24,4 +24,4 @@ try:
 except FileNotFoundError:
     print(f"Error: File not found. Check your KIT_DATA_PATH.")
 except Exception as e:
-    print(f"ERROR: {e}")
+    print(f"Error: {e}")
