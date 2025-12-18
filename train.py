@@ -77,7 +77,7 @@ for epoch in range(NUM_EPOCHS):
         torch.save(model.state_dict(), MODEL_SAVE_PATH)
         print(f"Model saved to {MODEL_SAVE_PATH}")
 
-# --- 7. --- FINAL SAVE ---
+# Finally save it
 torch.save(model.state_dict(), MODEL_SAVE_PATH)
-print("--- TRAINING COMPLETE ---")
+print("TRAINING COMPLETE")
 print(f"Final model saved to {MODEL_SAVE_PATH}")
