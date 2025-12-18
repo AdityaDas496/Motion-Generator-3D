@@ -1,25 +1,24 @@
 import os
 import json
-import xml.etree.ElementTree as ET # This is a built-in library for reading XML
+import xml.etree.ElementTree as ET # Built in library for reading the XML file
 import numpy as np
 
-print("Script is running...")
+print("Script will take some time to load")
 
-# --- 1. --- YOU MUST EDIT THIS ---
 # Point this to the folder you unzipped (the one with all the numbered files)
-KIT_DATA_PATH = r"C:/Users/Aditya Das/Downloads/2017-06-22"
+KIT_DATA_PATH = r"PUT_PATH_HERE"
 
-# --- 2. --- SETTINGS ---
+# Settings
 # Let's just load the first 50 motions for a test
+### The 50 motions themselves take about 3 hours to generate the motion data, so a very powerful GPU and high amount of RAM is required here
 MOTIONS_TO_LOAD = 50 
 
 # Where to save the final files
-SAVE_PATH = r"C:/Users/Aditya Das/Downloads/Blender Project Final" # Your new project folder
+SAVE_PATH = r"PUTH_PATH_OF_PROJECT_FOLDER" # Path of folder which holds the project
 MOTION_SAVE_FILE = os.path.join(SAVE_PATH, "kit_motion_data.npy")
 TEXT_SAVE_FILE = os.path.join(SAVE_PATH, "kit_text_data.json")
 
-# --- 3. --- MAIN SCRIPT ---
-
+# Id filtering, parsing of XML files, reading and processing of motion data
 def get_all_motion_ids(path):
     """Finds all unique motion IDs in the folder."""
     files = os.listdir(path)
@@ -52,21 +51,21 @@ def parse_motion_xml(xml_file):
         for frame in frame_nodes:
             frame_data_list = []
             
-            # --- 1. Get Root Position ---
+            # 1) Get Root positions
             root_pos_node = frame.find("RootPosition")
             if root_pos_node is None:
-                continue # Skip this frame if it's missing data
+                continue # In case data is missiong skip frame
             root_pos = [float(p) for p in root_pos_node.text.split()]
             frame_data_list.extend(root_pos)
             
-            # --- 2. Get Root Rotation ---
+            # 2) Get root rotation
             root_rot_node = frame.find("RootRotation")
             if root_rot_node is None:
                 continue # Skip this frame
             root_rot = [float(r) for r in root_rot_node.text.split()]
             frame_data_list.extend(root_rot)
             
-            # --- 3. Get all joint rotations ---
+            # 3) After that joint rotations
             # THIS IS THE FIX: It's <JointPosition>, not <JointAngles>
             joint_pos_node = frame.find("JointPosition") 
             if joint_pos_node is None:
@@ -86,7 +85,7 @@ def parse_motion_xml(xml_file):
         return None, None
 
 def main():
-    print("--- STARTING NEW KIT-ML DATA EXTRACTOR ---")
+    print("\nSTARTING NEW KIT-ML DATA EXTRACTOR")
     
     # These will hold our final data
     all_motion_data = []
@@ -104,7 +103,7 @@ def main():
         text_file = os.path.join(KIT_DATA_PATH, f"{motion_id}_annotations.json")
         xml_file = os.path.join(KIT_DATA_PATH, f"{motion_id}_mmm.xml")
         
-        # 1. Read the text annotations
+        # Read the text annotations
         try:
             with open(text_file, 'r') as f:
                 annotations = json.load(f)
@@ -118,7 +117,7 @@ def main():
             print(f"Error reading JSON {text_file}: {e}")
             continue
 
-        # 2. Read the motion data
+        # Read the motion data
         motion_array, joint_names = parse_motion_xml(xml_file)
         
         if motion_array is None:
@@ -127,11 +126,11 @@ def main():
             
         if joint_names_list is None:
             joint_names_list = joint_names
-            print(f"--- DETECTED SKELETON ({len(joint_names)} JOINTS) ---")
+            print(f"DETECTED SKELETON ({len(joint_names)} JOINTS)")
             print(joint_names)
-            print("--------------------------------------------------")
+            print("*--------------------------------------------------*")
 
-        # 3. Add to our master list
+        # Add to our master list
         # For *each* text annotation, we add the *same* motion
         for text in annotations:
             all_motion_data.append(motion_array)
@@ -145,7 +144,7 @@ def main():
     print(f"Successfully processed {processed_count} motions.")
     print(f"Created {len(all_text_data)} total (motion, text) pairs.")
 
-    # --- 4. SAVE FINAL FILES ---
+    # Save the final files
     if not all_motion_data:
         print("FATAL ERROR: No motion data was extracted.")
         return
@@ -160,9 +159,9 @@ def main():
         json.dump(all_text_data, f, indent=4)
     print(f"Text data saved to: {TEXT_SAVE_FILE}")
     
-    print("\n--- NEW PIPELINE V2 (EXTRACTOR) COMPLETE! ---")
+    print("\nEXTRACTOR COMPLETE")
 
 
-# --- Run the script ---
+# Run the script
 if __name__ == "__main__":
     main()
